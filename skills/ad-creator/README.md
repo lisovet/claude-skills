@@ -55,10 +55,11 @@ export GEMINI_API_KEY="your-key-here"  # Get one at https://aistudio.google.com/
 ## Installation
 
 ```bash
-/install-skill lisovet/claude-skills/skills/ad-creator
+git clone https://github.com/lisovet/claude-skills.git /tmp/claude-skills
+cp -r /tmp/claude-skills/skills/ad-creator ~/.claude/skills/
 ```
 
-> **Important:** This skill has reference files and a script. Use `/install-skill` or clone the whole folder — a single `curl` of SKILL.md won't include the templates.
+> **Important:** This skill has reference files and a script. You need the whole folder — a single `curl` of SKILL.md won't include the templates or generation script.
 
 ## Usage
 

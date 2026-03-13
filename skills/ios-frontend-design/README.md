@@ -72,7 +72,16 @@ Every design must pass before delivery:
 ## Installation
 
 ```bash
-/install-skill lisovet/claude-skills/skills/ios-frontend-design
+git clone https://github.com/lisovet/claude-skills.git /tmp/claude-skills
+cp -r /tmp/claude-skills/skills/ios-frontend-design ~/.claude/skills/
+```
+
+Or grab just the SKILL.md (this skill has no reference files):
+
+```bash
+mkdir -p ~/.claude/skills/ios-frontend-design
+curl -sL https://raw.githubusercontent.com/lisovet/claude-skills/main/skills/ios-frontend-design/SKILL.md \
+  -o ~/.claude/skills/ios-frontend-design/SKILL.md
 ```
 
 ## Usage

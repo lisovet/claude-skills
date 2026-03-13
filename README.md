@@ -70,35 +70,35 @@ Then use **copywriting-strategist** to generate the angles and headlines.
 
 ## Installation
 
-### One command (recommended)
+### Install all skills
 
 ```bash
-/install-skill lisovet/claude-skills/skills/<skill-name>
-```
-
-Available skill names: `ios-frontend-design`, `ad-creator`, `conversion-architect`, `copywriting-strategist`
-
-### Manual install
-
-```bash
-# Clone and copy the skill you want
 git clone https://github.com/lisovet/claude-skills.git /tmp/claude-skills
-cp -r /tmp/claude-skills/skills/<skill-name> ~/.claude/skills/
+cp -r /tmp/claude-skills/skills/* ~/.claude/skills/
 ```
 
-Or grab a single skill with curl:
+### Install a single skill
 
 ```bash
-mkdir -p ~/.claude/skills/<skill-name>
-curl -sL https://raw.githubusercontent.com/lisovet/claude-skills/main/skills/<skill-name>/SKILL.md \
-  -o ~/.claude/skills/<skill-name>/SKILL.md
+git clone https://github.com/lisovet/claude-skills.git /tmp/claude-skills
+cp -r /tmp/claude-skills/skills/ios-frontend-design ~/.claude/skills/
 ```
 
-> **Note:** Skills with `references/` directories (conversion-architect, copywriting-strategist, ad-creator) need the entire folder, not just the SKILL.md. Use the clone or `/install-skill` method for those.
+### Lightweight install (SKILL.md only — no references)
+
+For skills without reference files (`ios-frontend-design` only):
+
+```bash
+mkdir -p ~/.claude/skills/ios-frontend-design
+curl -sL https://raw.githubusercontent.com/lisovet/claude-skills/main/skills/ios-frontend-design/SKILL.md \
+  -o ~/.claude/skills/ios-frontend-design/SKILL.md
+```
+
+> **Note:** `ad-creator`, `conversion-architect`, and `copywriting-strategist` have `references/` directories that the skill reads at runtime. Use `git clone` + `cp -r` for those — a single curl won't get the supporting files.
 
 ### Verify
 
-After installing, the skill appears in Claude Code automatically. Invoke it with `/<skill-name>` or let it activate based on context.
+After copying, restart Claude Code. The skill appears automatically — invoke it with `/<skill-name>` or let it activate based on context.
 
 ---
 

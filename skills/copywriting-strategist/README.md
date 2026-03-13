@@ -61,10 +61,11 @@ The angle generation process synthesizes principles from 10 copywriting legends:
 ## Installation
 
 ```bash
-/install-skill lisovet/claude-skills/skills/copywriting-strategist
+git clone https://github.com/lisovet/claude-skills.git /tmp/claude-skills
+cp -r /tmp/claude-skills/skills/copywriting-strategist ~/.claude/skills/
 ```
 
-> **Important:** This skill has 12 reference files including the headline bank and all 7 Schwartz technique breakdowns. Use `/install-skill` or clone the whole folder.
+> **Important:** This skill has 12 reference files including the headline bank and all 7 Schwartz technique breakdowns. You need the whole folder — not just SKILL.md.
 
 ## Usage
 

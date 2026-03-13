@@ -107,10 +107,11 @@ None of the above?
 ## Installation
 
 ```bash
-/install-skill lisovet/claude-skills/skills/conversion-architect
+git clone https://github.com/lisovet/claude-skills.git /tmp/claude-skills
+cp -r /tmp/claude-skills/skills/conversion-architect ~/.claude/skills/
 ```
 
-> **Important:** This skill has 6 reference files with the detailed model breakdowns. Use `/install-skill` or clone the whole folder.
+> **Important:** This skill has 6 reference files with the detailed model breakdowns. You need the whole folder — not just SKILL.md.
 
 ## Usage
 
