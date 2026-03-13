@@ -8,6 +8,7 @@ A collection of Claude Code skills for design, development, and creative work.
 |-------|-------------|
 | [ios-frontend-design](skills/ios-frontend-design/) | Design and build distinctive, production-grade iOS interfaces in SwiftUI. An opinionated creative director that rejects generic AI aesthetics. |
 | [image-prompt](skills/image-prompt/) | Generate optimized prompts for Google's Nano Banana image generators (Nano Banana 2 and Nano Banana Pro). Based on official Google prompting guidance. |
+| [ad-creator](skills/ad-creator/) | Generate ad images using Nano Banana (Gemini). Includes a Python generation script, 40 DTC ad templates, and an interactive prompt-crafting workflow. |
 
 ## Installation
 
@@ -17,6 +18,7 @@ A collection of Claude Code skills for design, development, and creative work.
 # Install a specific skill
 /install-skill lisovet/claude-skills/skills/ios-frontend-design
 /install-skill lisovet/claude-skills/skills/image-prompt
+/install-skill lisovet/claude-skills/skills/ad-creator
 
 # Or manually:
 git clone https://github.com/lisovet/claude-skills.git /tmp/claude-skills
