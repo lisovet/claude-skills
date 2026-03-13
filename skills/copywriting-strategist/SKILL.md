@@ -73,7 +73,7 @@ The angle generation process is grounded in the timeless principles of the 10 co
 | `references/angle-generation-matrix.md` | Framework and examples for crossing desires with mechanisms | Phase 1 — generating strategic angles |
 | `references/emotional-triggers-library.md` | Catalog of core human drivers and emotional triggers | Phase 1 — identifying emotional entry points |
 | `references/schwartz-on-desire.md` | Key insights from Schwartz on channeling mass desire | Phase 1 — grounding angles in existing demand |
-| `references/headline-bank.md` | 100+ proven headline formulas categorized by type | Phase 2 — generating execution angles |
+| `references/headline-bank.md` | 25 proven headline formulas categorized by type | Phase 2 — generating execution angles |
 | `references/schwartz-techniques/` | Detailed breakdowns of Schwartz's 7 core techniques | Phase 2 — applying the right technique for the awareness level |
 
 ### Schwartz Techniques Reference

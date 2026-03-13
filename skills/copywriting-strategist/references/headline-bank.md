@@ -1,6 +1,6 @@
 # Headline Bank
 
-This document contains 100+ proven headline formulas from John Caples and other copywriting masters, categorized by type.
+This document contains 25 proven headline formulas from John Caples and other copywriting masters, categorized by type.
 
 ## The Four U's of Headline Writing
 
@@ -50,5 +50,3 @@ This document contains 100+ proven headline formulas from John Caples and other 
 23. "I Never Thought I Could [Achieve Goal] Until I Tried [Product]."
 24. "[Authority Figure] Recommends [Product]."
 25. "The Only [Product Category] I Trust."
-
-### ...and 75+ more formulas to be added.

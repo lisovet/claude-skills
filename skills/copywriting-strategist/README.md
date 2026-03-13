@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Generate strategic and execution angles for copywriting campaigns.</strong><br/>
-  Uses the Angle Generation Machine methodology, Schwartz's 7 techniques, and 100+ headline formulas.
+  Uses the Angle Generation Machine methodology, Schwartz's 7 techniques, and 25 headline formulas.
 </p>
 
 ---
@@ -85,7 +85,7 @@ copywriting-strategist/
     angle-generation-matrix.md                      # Framework for crossing desires with mechanisms
     emotional-triggers-library.md                   # Catalog of core human drivers
     schwartz-on-desire.md                           # Key insights on channeling mass desire
-    headline-bank.md                                # 100+ proven headline formulas by type
+    headline-bank.md                                # 25 proven headline formulas by type
     schwartz-techniques/
       01-intensification.md                         # Amplifying desire/pain
       02-identification.md                          # Building "people like me"

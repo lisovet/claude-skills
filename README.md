@@ -40,7 +40,7 @@ Each skill is a `SKILL.md` file (with optional reference docs) that you drop int
 | | Skill | What It Does |
 |---|---|---|
 | <img src="https://img.shields.io/badge/-Strategy-F59E0B?style=flat-square" /> | **[conversion-architect](skills/conversion-architect/)** | 20 mental models for auditing and architecting DTC landing pages. Covers MECLABS diagnostics, belief chains, emotional sequencing, objection mapping, and more. The strategic foundation layer for all copywriting skills. |
-| <img src="https://img.shields.io/badge/-Copy-EF4444?style=flat-square" /> | **[copywriting-strategist](skills/copywriting-strategist/)** | Generates campaign angles using the Angle Generation Machine methodology. Includes Schwartz's 7 techniques, 100+ headline formulas, emotional triggers library, and a systematic process for turning brand knowledge into high-converting hooks. |
+| <img src="https://img.shields.io/badge/-Copy-EF4444?style=flat-square" /> | **[copywriting-strategist](skills/copywriting-strategist/)** | Generates campaign angles using the Angle Generation Machine methodology. Includes Schwartz's 7 techniques, 25 headline formulas, emotional triggers library, and a systematic process for turning brand knowledge into high-converting hooks. |
 
 <details>
 <summary><strong>How the copywriting skills work together</strong></summary>
