@@ -1,0 +1,8 @@
+{
+  "name": "qa-monkey",
+  "version": "0.1.0",
+  "description": "A suspicious, curious QA engineer that continuously probes your project for bugs, silent failures, and visual inconsistencies using 6 specialist agents.",
+  "author": {
+    "name": "Toronto Labs"
+  }
+}

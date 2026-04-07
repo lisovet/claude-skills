@@ -1,14 +1,14 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude_Code-Skills-7C3AED?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMkw0IDdWMTdMMTIgMjJMMjAgMTdWN0wxMiAyWiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=&logoColor=white" alt="Claude Code Skills" />
   <img src="https://img.shields.io/github/license/lisovet/claude-skills?style=for-the-badge&color=22c55e" alt="MIT License" />
-  <img src="https://img.shields.io/badge/skills-4-blue?style=for-the-badge" alt="4 Skills" />
+  <img src="https://img.shields.io/badge/skills_&_plugins-5-blue?style=for-the-badge" alt="5 Skills & Plugins" />
 </p>
 
 <h1 align="center">Claude Skills</h1>
 
 <p align="center">
-  <strong>Drop-in skills for Claude Code that turn it into a specialist.</strong><br/>
-  iOS design &bull; AI image generation &bull; DTC copywriting &bull; Landing page architecture
+  <strong>Drop-in skills and plugins for Claude Code that turn it into a specialist.</strong><br/>
+  Autonomous QA &bull; iOS design &bull; AI image generation &bull; DTC copywriting &bull; Landing page architecture
 </p>
 
 ---
@@ -18,6 +18,18 @@
 Skills are markdown instruction files that give Claude Code deep domain expertise. Install one and Claude gains an opinionated, battle-tested workflow for that domain — not just knowledge, but *judgment*.
 
 Each skill is a `SKILL.md` file (with optional reference docs) that you drop into `~/.claude/skills/`. Claude Code loads them automatically.
+
+---
+
+## Plugins
+
+### Autonomous QA
+
+| | Plugin | What It Does |
+|---|---|---|
+| <img src="https://img.shields.io/badge/-QA_Monkey-EF4444?style=flat-square&logo=bug&logoColor=white" /> | **[qa-monkey](skills/qa-monkey/)** | A suspicious, curious QA engineer that continuously probes your project for bugs nobody else caught. 6 specialist agents (Invariant Checker, Silent Failure Hunter, Drift Detector, Data Integrity Auditor, Test Gap Finder, Visual Auditor) investigate with confidence-scored, evidence-backed findings. Ralph-loop iteration, Puppeteer screenshots, multi-hypothesis testing. Born from catching real production bugs — the hard way. |
+
+> **Plugins vs Skills:** Plugins have commands (`/qa-monkey`), hooks, and agents. Skills are passive instruction files. Both live in this repo.
 
 ---
 
@@ -69,6 +81,15 @@ Then use **copywriting-strategist** to generate the angles and headlines.
 ---
 
 ## Installation
+
+### Install QA Monkey (plugin)
+
+```bash
+git clone https://github.com/lisovet/claude-skills.git /tmp/claude-skills
+cp -r /tmp/claude-skills/skills/qa-monkey ~/.claude/plugins/qa-monkey
+```
+
+Then restart Claude Code and run `/qa-monkey` to start investigating.
 
 ### Install all skills
 
