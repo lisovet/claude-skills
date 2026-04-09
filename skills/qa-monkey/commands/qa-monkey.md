@@ -127,3 +127,18 @@ Print a brief summary:
 "Iteration N: Investigated {heuristic}. Found {N} issues ({N} critical). {M}/{total} heuristics verified. Next: {remaining}."
 
 Then exit — the stop hook will bring you back for the next iteration.
+
+### Step 7: Remediation Handoff (final iteration only)
+
+When you detect the investigation is ending (stale 3/3, max iterations reached, or all heuristics verified):
+
+1. Count active CRITICAL and WARNING findings in `.claude/qa-findings.md` (exclude RESOLVED/STALE)
+2. If `--fix` flag was set in `.claude/qa-monkey.local.md` (fix_mode: true):
+   - Print: "Investigation complete. {N} issues found. Starting remediation..."
+   - Invoke `/qa-fix` to begin the remediation pipeline automatically
+3. If findings exist but no `--fix` flag:
+   - Print: "Found {C} critical and {W} warning issues. Want me to fix them? [Y/n]"
+   - If user says yes: invoke `/qa-fix`
+   - If user says no: print "Findings saved to .claude/qa-findings.md. Run /qa-fix anytime to remediate."
+4. If no active findings:
+   - Print: "System verified clean. No remediation needed."
