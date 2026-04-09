@@ -40,8 +40,8 @@ Compare every layer of configuration and find mismatches: code defaults vs env v
 - Find timeouts/limits from a previous architecture
 
 ## Red Flags
-- Env var truncated by shell (token cut at special character)
-- URL set but firewall blocks it (service unreachable, code falls back silently)
+- Env var truncated by shell (our auth token was cut at `-`)
+- URL set but firewall blocks it (our profile server)
 - Config set in one env but not another
 - Default value is production-unsafe (debug=true, unlimited retries)
 - Same config key, different values, unclear which wins

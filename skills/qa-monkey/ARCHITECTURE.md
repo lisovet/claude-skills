@@ -52,7 +52,8 @@ qa-monkey/
 ├── .claude-plugin/
 │   └── plugin.json              # Plugin metadata + skill registry
 ├── commands/
-│   ├── qa-monkey.md             # Main orchestrator (user runs /qa-monkey)
+│   ├── qa-monkey.md             # Investigation orchestrator (/qa-monkey)
+│   ├── qa-fix.md                # Remediation orchestrator (/qa-fix)
 │   ├── qa-findings.md           # Show findings (/qa-findings)
 │   └── cancel-qa.md             # Cancel loop (/cancel-qa)
 ├── agents/
@@ -61,15 +62,21 @@ qa-monkey/
 │   ├── drift-detector.md        # Config vs runtime divergence
 │   ├── data-integrity.md        # Counts, math, timestamps
 │   ├── test-gap-finder.md       # Coverage gaps + missing tests
-│   └── visual-auditor.md        # Puppeteer screenshots + multimodal
+│   ├── visual-auditor.md        # Puppeteer screenshots + multimodal
+│   └── prd-generator.md         # Generates remediation PRDs
 ├── prompts/
 │   └── heuristics.md            # Reference library of checks
 ├── hooks/
-│   └── stop-hook.sh             # Ralph-loop style iteration
+│   └── stop-hook.sh             # Ralph-loop style iteration (qa-monkey only)
+├── scripts/
+│   ├── setup-qa-monkey.sh       # Initialize investigation loop
+│   └── setup-qa-fix.sh          # Initialize remediation pipeline
 ├── templates/
 │   ├── qa-findings.md           # Findings file template
 │   ├── qa-known-issues.md       # User marks accepted risks
-│   └── qa-exceptions.md         # Patterns to ignore
+│   ├── qa-exceptions.md         # Patterns to ignore
+│   ├── remediation-prd-light.md # Lightweight PRD template
+│   └── remediation-prd-full.md  # Full PRD template
 └── README.md
 ```
 
@@ -387,6 +394,56 @@ Iteration 4+:
 | No tests in project | Skip Test Gap Finder, add WARNING finding |
 | No UI in project | Skip Visual Auditor entirely |
 | CI mode (`--ci`) | All agents, single pass, no loop |
+
+## Remediation Pipeline (`/qa-fix`)
+
+Unlike the investigation loop (which uses a stop hook to repeat iterations), the remediation pipeline runs as a **single long-running command**. No stop hook needed.
+
+### Architecture Decision: Why No Stop Hook
+
+The investigation loop repeats the same prompt each iteration — perfect for a stop hook. The remediation pipeline needs **phase transitions** (triage -> PRD -> review -> approve -> implement -> verify -> ship). These phases have different prompts, tools, and user interaction models. Driving this via a stop hook would require the hook to construct different prompts per phase, detect user input from transcripts, and manage complex state — all fragile.
+
+Instead, `qa-fix.md` is a long-running orchestrator prompt that manages phases internally. A state file (`.claude/qa-fix.local.md`) exists only for **resume capability** — if the session dies, `/qa-fix` reads it and offers to continue.
+
+### Architecture Decision: Orchestrator Does TDD, Not a Subagent
+
+A subagent doing TDD (write tests, run tests, implement, run tests again, run lint, run typecheck) easily exhausts its token budget. Investigation agents are read-only and bounded; implementation agents are write-heavy and unbounded.
+
+The orchestrator does TDD directly. Subagents are used only for:
+- **PRD generation** — read-only analysis, bounded output
+- **Complex verification** — scoped to one finding, read-only
+
+### Flow
+
+```
+/qa-monkey (stop-hook loop)         /qa-fix (single session)
+
+  Investigate -> Findings  ------>  1. Triage (parse, group, sort)
+                   |                2. PRD Generation (prd-generator agents)
+                   v                3. Review (orchestrator sanity check)
+            qa-findings.md          4. Approval (user gate: Y/n/select)
+                                    5. TDD Implementation (orchestrator)
+                                    6. Verification (tests + code check)
+                                    7. Checkpoint (user: continue/skip/stop)
+                                    8. Ship (push + PR)
+                                    9. Cleanup
+```
+
+### State Files
+
+| File | Purpose | Lifecycle |
+|------|---------|-----------|
+| `.claude/qa-monkey.local.md` | Investigation loop state | Created by setup-qa-monkey.sh, deleted on completion |
+| `.claude/qa-fix.local.md` | Remediation pipeline state | Created by setup-qa-fix.sh, deleted on completion |
+| `.claude/qa-findings.md` | Findings (persists across sessions) | Created on first investigation, updated by both pipelines |
+| `.claude/qa-fix-prds/*.md` | Generated remediation PRDs | Created during PRD gen, kept for reference |
+
+### Auto-Chain
+
+When `/qa-monkey` finishes investigation:
+- With `--fix` flag: auto-invokes `/qa-fix`
+- Without `--fix`: asks user "Want me to fix them? [Y/n]"
+- No findings: "System verified clean."
 
 ## Security Model
 
