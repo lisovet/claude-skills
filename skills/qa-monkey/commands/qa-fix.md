@@ -84,7 +84,129 @@ Update state file: `phase: prd_gen`, set `fixes_remaining` with selected finding
 
 ### Phase 2: PRD GENERATION
 
-For each fix group, spawn a **prd-generator agent** via the Agent tool:
+**Dead-code fast-path** — if `finding.type == dead_code`, skip PRD generation
+for that finding and run the loop below instead. PRDs exist to capture design
+decisions and acceptance criteria; dead-code removal has neither. Use this
+path for every `type: dead_code` finding emitted by H7.
+
+#### 2a. Pre-loop
+
+1. **Apply exclusion allowlist** — drop candidates matching any of:
+   - Files under `migrations/`, `management/commands/`, or named
+     `conftest.py`, `__init__.py`, `admin.py`, `settings*.py`
+   - Symbols decorated with registration decorators: `@app.route`,
+     `@click.command`, `@pytest.fixture`, `@celery.task`, `@receiver`,
+     `@hookimpl`, `@pytest.mark.*`, framework-specific equivalents
+   - Entries in `pyproject.toml` / `setup.py` `entry_points` or
+     `console_scripts`
+   - Symbols listed in any `__all__`
+   - Lines already marked `# noqa: F401` / `# noqa: F841` or listed in a
+     `.vulture_whitelist` / `vulture_ignore.py`
+
+2. **Capture baseline**:
+   - Full test suite: record pass/fail counts and exit status
+   - Public API surface per top-level package:
+     `python -c "import pkg; print(sorted(x for x in dir(pkg) if not x.startswith('_')))"`
+   - Import-time smoke: `python -c "import pkg.sub"` for every `__init__.py`
+     in the tree
+
+3. **Defer branch creation** — do NOT create the branch yet. If the loop ends
+   with zero commits, we skip branch/PR entirely.
+
+#### 2b. Removal loop (max 3 iterations)
+
+For each iteration:
+
+**Step 1 — Classify each remaining candidate.**
+
+Gather evidence per candidate before assigning a tier:
+- Grep the entire repo for the symbol as a string literal (catches
+  `getattr`, `importlib.import_module`, template rendering, config-driven
+  dispatch)
+- Grep non-code files: `*.html`, `*.jinja`, `*.yaml`, `*.yml`, `*.toml`,
+  `*.json`, `.github/workflows/*`, `Dockerfile*`, `Makefile`, `docs/`
+- Check for any `from {module} import {symbol}` elsewhere in the repo
+
+Assign a tier:
+- **T1 — strictly safe**: `ruff F401` unused imports, `ruff F841` unused
+  locals, private `_helper` in its own file with zero grep hits anywhere
+- **T2 — likely safe**: module-private function/class with zero grep hits
+  across the entire repo (code AND non-code files)
+- **T3 — review needed**: public symbol, any string-literal match anywhere,
+  anything in `__init__.py`, anything with ambiguous evidence
+
+Only T1 and T2 are eligible for auto-deletion. T3 is deferred to the
+post-loop report.
+
+**Step 2 — Delete T1, one commit per file.**
+
+For each file with T1 deletions (in this iteration):
+- Create the branch `qa-monkey/fix-dead-code` if not yet created (append
+  `-v2`, `-v3` if it exists)
+- Delete the listed items in that file
+- Stage only that file
+- Commit: `chore: remove unused imports from {file}`
+- Run the full test suite + re-capture public API surface + re-run import
+  smoke
+- **If PASS and no diff**: keep the commit, proceed
+- **If FAIL or API/import diff**: `git revert HEAD --no-edit`, downgrade
+  every symbol in that file's T1 batch to T3, continue with the next file
+
+**Step 3 — Delete T2, one commit per file.**
+
+Same as step 2, but for T2 candidates:
+- Commit: `chore: remove unused symbols from {file} ({symbol_list})`
+- Same test + API + import-smoke gate
+- Same revert-and-downgrade behavior on failure
+
+**Step 4 — Re-detect.**
+
+Re-run ruff/vulture (or the non-Python fallback). New candidates (helpers
+that only served now-deleted code) go into the next iteration.
+
+**Step 5 — Exit condition.**
+
+Exit the loop when any of:
+- No new T1 or T2 candidates this pass
+- 3 iterations completed
+- All remaining candidates are T3
+
+#### 2c. Post-loop
+
+- **If zero commits were made**:
+  - Do NOT create a branch or PR
+  - Update the finding in `qa-findings.md`: keep it active, append the T3
+    list under "Needs human review", add a note explaining why
+    auto-deletion was not attempted
+  - Move to the next finding in the triage list
+- **If one or more commits were made**:
+  - Push branch `qa-monkey/fix-dead-code`
+  - Open one PR with a body listing:
+    - T1 deletions (quiet, one line per file)
+    - T2 deletions (flagged, one line per symbol)
+    - T3 items (for human review, with file:line and reason)
+  - Mark the finding `Status: RESOLVED` with branch and PR links; keep T3
+    items as a separate open finding if any exist
+
+#### 2d. Git-cleanliness guarantees
+
+- **Every commit is tests-green** — a failing commit is reverted in the same
+  iteration, never left on the branch
+- **File-level atomic commits** — bisect and revert work at file granularity
+- **T1 and T2 are separate commits** — a regressing T2 revert never loses a
+  safe T1 deletion
+- **No squash, no force-push** — the per-file history is the record
+- **No empty branches** — branch is only created once there is something to
+  commit
+
+Skip the rest of Phase 2 for this finding; do not proceed to Phase 3/4
+(Review/Approval) — the loop already enforces its own safety via the test
+gate. Move directly to the next finding in the triage list.
+
+---
+
+**Default path (non-dead-code findings)**: For each fix group, spawn a
+**prd-generator agent** via the Agent tool:
 
 ```
 Agent(

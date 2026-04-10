@@ -117,7 +117,7 @@ Iterations: 0
 - [ ] H4: File Integrity
 - [ ] H5: Count Comparison
 - [ ] H6: Staleness Check
-- [ ] H7: Dead Code
+- [ ] H7: Dead Code (ruff + vulture for Python)
 - [ ] H8: Parallel System Detection
 - [ ] H9: Silent Failure Scan
 - [ ] H10: Log Analysis
