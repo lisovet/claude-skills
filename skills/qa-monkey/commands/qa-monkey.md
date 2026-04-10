@@ -45,7 +45,7 @@ Pick ONE focus from the heuristic library that hasn't been verified yet:
 - H4: File Integrity — check referenced files exist, sizes sane, JSON valid
 - H5: Count Comparison — find multiple sources of truth, compare counts
 - H6: Staleness Check — find timestamps, check freshness
-- H7: Dead Code — find unused imports, functions, files
+- H7: Dead Code — find unused imports, functions, variables, files. Report as a `type: dead_code` finding with a structured `Candidates:` list of `{file}:{line} {symbol}` items; `/qa-fix` handles removal via its dead-code fast-path (no PRD).
 - H8: Parallel System Detection — find duplicate implementations
 - H9: Silent Failure Scan — find swallowed exceptions, empty catches
 - H10: Log Analysis — grep for error patterns, repeated failures
@@ -66,7 +66,7 @@ For each heuristic, either investigate directly OR spawn a specialist agent.
 - H4 (File Integrity) → investigate directly (ls, cat, json parse)
 - H5 (Count Comparison) → spawn `data-integrity` agent
 - H6 (Staleness Check) → investigate directly (stat, timestamps)
-- H7 (Dead Code) → investigate directly (grep for unused imports)
+- H7 (Dead Code) → investigate directly: Python → `ruff check --select F401,F841` + `vulture --min-confidence 80 .`; non-Python → grep for unused imports/exports. Emit one `type: dead_code` finding per candidate batch; do NOT delete anything here.
 - H8 (Parallel System) → investigate directly (grep for duplicate patterns)
 - H9 (Silent Failure) → spawn `silent-failure-hunter` agent
 - H10 (Log Analysis) → investigate directly (grep logs)
