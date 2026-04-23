@@ -1,0 +1,57 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "claude-skills",
+  "version": "1.0.0",
+  "description": "Drop-in skills and plugins for Claude Code — autonomous QA, iOS design, AI image generation, DTC copywriting, landing-page architecture.",
+  "owner": {
+    "name": "lisovet"
+  },
+  "plugins": [
+    {
+      "name": "qa-monkey",
+      "source": "./skills/qa-monkey",
+      "description": "A suspicious, curious QA engineer that continuously probes your project for bugs, silent failures, and visual inconsistencies using 6 specialist agents.",
+      "version": "0.1.0",
+      "author": { "name": "Toronto Labs" },
+      "category": "testing",
+      "keywords": ["qa", "testing", "agents", "puppeteer"]
+    },
+    {
+      "name": "ios-frontend-design",
+      "source": "./skills/ios-frontend-design",
+      "description": "Design and build distinctive, production-grade iOS interfaces in SwiftUI. Honors HIG while rejecting generic AI-generated aesthetics.",
+      "version": "1.0.0",
+      "category": "design",
+      "keywords": ["ios", "swiftui", "design", "hig"],
+      "strict": false,
+      "skills": "."
+    },
+    {
+      "name": "ad-creator",
+      "source": "./skills/ad-creator",
+      "description": "Generate ad images with Google's Nano Banana (Gemini) API. Includes a Python generation script, 40 DTC ad templates, and an interactive prompt-crafting workflow.",
+      "category": "creative",
+      "keywords": ["ads", "image-generation", "gemini", "nano-banana", "dtc"],
+      "strict": false,
+      "skills": "."
+    },
+    {
+      "name": "conversion-architect",
+      "source": "./skills/conversion-architect",
+      "description": "20 mental models for auditing and architecting DTC landing pages — MECLABS diagnostics, belief chains, emotional sequencing, objection mapping.",
+      "category": "marketing",
+      "keywords": ["dtc", "landing-page", "conversion", "copywriting", "funnel"],
+      "strict": false,
+      "skills": "."
+    },
+    {
+      "name": "copywriting-strategist",
+      "source": "./skills/copywriting-strategist",
+      "description": "Generate campaign angles via the Angle Generation Machine methodology. Includes Schwartz's 7 techniques, 25 headline formulas, and an emotional triggers library.",
+      "category": "marketing",
+      "keywords": ["copywriting", "ads", "angles", "headlines", "dtc"],
+      "strict": false,
+      "skills": "."
+    }
+  ]
+}
